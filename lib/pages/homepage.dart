@@ -1,24 +1,25 @@
+import 'package:final_flutter_project/data/models/track.dart';
+import 'package:final_flutter_project/data/repositories/deezer_api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
+
 }
 
 class _HomePageState extends State<HomePage> {
 
-  Future<void> getAllCharacters() async {
-    var uri = Uri.parse('https://rickandmortyapi.com/api/character');
-    var responseFromApi = await http.get(uri);
-    if (responseFromApi.statusCode == 200) {
-      setState(() {
-        print("WOOORKS");
-      });
-    }
+  DeezerApiRepository deezerApiRepository = DeezerApiRepository();
+  List<Track> _tracks = [];
+
+  Future<void> getTrendingTracks() async {
+    setState(() async {
+      _tracks = await deezerApiRepository.getTrendingTracks();
+    });
   }
 
   @override
@@ -34,11 +35,10 @@ class _HomePageState extends State<HomePage> {
   Widget _getBody() {
     return ListView.separated(
       separatorBuilder: (BuildContext context, int index) => const Divider(),
-      itemCount: 5,
+      itemCount: _tracks.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text("Vide"),
-          leading: Image.network(""),
+          title: Text(_tracks[index].title ?? "Vide"),
         );
       },
     );
