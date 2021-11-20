@@ -1,3 +1,4 @@
+import 'package:final_flutter_project/pages/auth_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/homepage.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: const AuthScreen(),
     );
   }
 }
