@@ -44,7 +44,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 );
                 setState(() {
                 });
-              }, child: const Text('Login'))
+              }, child: const Text('Register'))
             ],
           ),
         ),
