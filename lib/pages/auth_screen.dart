@@ -44,7 +44,15 @@ class _AuthScreenState extends State<AuthScreen> {
                 );
                 setState(() {
                 });
-              }, child: const Text('Register'))
+              }, child: const Text('Register')),
+              ElevatedButton(onPressed: () async {
+                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: _emailController.text,
+                    password: _passwordController.text
+                );
+                setState(() {
+                });
+              }, child: const Text('Login'))
             ],
           ),
         ),
