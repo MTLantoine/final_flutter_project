@@ -2,6 +2,8 @@ import 'package:final_flutter_project/data/models/track.dart';
 import 'package:final_flutter_project/data/repositories/deezer_api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:developer';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,12 +15,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  _HomePageState() {
+    getTrendingTracks();
+  }
+
   DeezerApiRepository deezerApiRepository = DeezerApiRepository();
   List<Track> _tracks = [];
 
   Future<void> getTrendingTracks() async {
-    setState(() async {
-      _tracks = await deezerApiRepository.getTrendingTracks();
+    var data = await deezerApiRepository.getTrendingTracks();
+    setState(()  {
+      _tracks = data;
     });
   }
 
