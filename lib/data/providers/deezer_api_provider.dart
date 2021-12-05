@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class DeezerApiProvider {
-
   static final DeezerApiProvider _singleton = DeezerApiProvider._internal();
 
   factory DeezerApiProvider() => _singleton;
@@ -25,7 +24,7 @@ class DeezerApiProvider {
         return List<Track>.empty();
       }
       List<Track> tracks = [];
-      json.forEach((key, track) => tracks.add(Track.fromJson(track)));
+      json['tracks']['data'].forEach((track) => tracks.add(Track.fromJson(track)));
 
       return tracks;
     }
