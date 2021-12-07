@@ -3,7 +3,8 @@ import 'package:final_flutter_project/data/repositories/deezer_api_repository.da
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:developer';
+
+import 'music_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -40,14 +41,27 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _getBody() {
-    return ListView.separated(
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
-      itemCount: _tracks.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(_tracks[index].title ?? "Vide"),
-        );
-      },
-    );
+    if (_tracks.isNotEmpty) {
+      return ListView.separated(
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
+        itemCount: _tracks.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(_tracks[index].title ?? "Titre inconnu"),
+            leading: Image.network(_tracks[index].album!.cover ?? ""),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => MusicPage(infos: _tracks[index])),
+              );
+            },
+          );
+        },
+      );
+    } else {
+      return const Center(
+          child:
+          CircularProgressIndicator()
+      );
+    }
   }
 }
