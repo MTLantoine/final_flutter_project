@@ -35,7 +35,10 @@ class _AuthScreenState extends State<AuthScreen> {
                 },
               ),
               TextFormField(
-                  controller: _passwordController
+                  controller: _passwordController,
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false
               ),
               ElevatedButton(onPressed: () async {
                 await FirebaseAuth.instance.createUserWithEmailAndPassword(
