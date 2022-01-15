@@ -51,20 +51,26 @@ class _CommentListState extends State<CommentList> {
               const Divider(),
           itemCount: _comments.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(_comments[index].author),
-                subtitle: Text(_comments[index].data),
-                leading: Container(
-                    height: 40.0,
-                    width: 40.0,
-                    decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.all(Radius.circular(50))),
-                    child: const CircleAvatar(
-                      radius: 50,
-                        backgroundImage: AssetImage('assets/default-profile.png'))
-                    )
-                );
+            return Container(
+              margin: const EdgeInsets.only(top: 10.0),
+              decoration: const BoxDecoration(
+                color: Colors.white
+              ),
+              child: ListTile(
+                  title: Text(_comments[index].author),
+                  subtitle: Text(_comments[index].data),
+                  leading: Container(
+                      height: 40.0,
+                      width: 40.0,
+                      decoration: const BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
+                      child: const CircleAvatar(
+                          radius: 50,
+                          backgroundImage: AssetImage('assets/default-profile.png'))
+                  )
+              )
+            );
           });
     } else {
       return const Center(child: CircularProgressIndicator());
