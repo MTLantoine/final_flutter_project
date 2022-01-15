@@ -14,7 +14,7 @@
       This is a placeholder for base href that will be replaced by the value of
       the `--base-href` argument provided to `flutter build`.
     -->
-    <base href="$FLUTTER_BASE_HREF">
+    <base href="/">
 
     <meta charset="UTF-8">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -48,7 +48,10 @@
     appId: "1:341038267993:web:5cddeba2c11e68d6183b48",
     measurementId: "G-P4NX3W03VH"
   };
-  const app = initializeApp(firebaseConfig);
+
+  //Init Firebase
+
+  const app = firebase.initializeApp(firebaseConfig);
 
 </script>
 <script>
