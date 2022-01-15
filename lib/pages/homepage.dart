@@ -11,11 +11,9 @@ class HomePage extends StatefulWidget {
 
   @override
   _HomePageState createState() => _HomePageState();
-
 }
 
 class _HomePageState extends State<HomePage> {
-
   _HomePageState() {
     getTrendingTracks();
   }
@@ -25,7 +23,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> getTrendingTracks() async {
     var data = await deezerApiRepository.getTrendingTracks();
-    setState(()  {
+    setState(() {
       _tracks = data;
     });
   }
@@ -35,6 +33,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Music critizer'),
+        centerTitle: true,
       ),
       body: _getBody(),
     );
@@ -42,26 +41,81 @@ class _HomePageState extends State<HomePage> {
 
   Widget _getBody() {
     if (_tracks.isNotEmpty) {
-      return ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-        itemCount: _tracks.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_tracks[index].title ?? "Titre inconnu"),
-            leading: Image.network(_tracks[index].album!.cover ?? ""),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => MusicPage(infos: _tracks[index])),
-              );
-            },
-          );
-        },
+      return Padding(
+        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+        child: Column(
+          children: <Widget>[
+            _getSearchBar(),
+            Expanded(
+              child: _getMusicList(),
+            )
+          ],
+        ),
       );
     } else {
-      return const Center(
-          child:
-          CircularProgressIndicator()
-      );
+      return const Center(child: CircularProgressIndicator());
     }
+  }
+
+  Widget _getSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Container(
+          width: double.infinity,
+          margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+          height: 56,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(32),
+            color: Colors.white,
+            boxShadow: kElevationToShadow[6],
+          ),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        hintText: 'Artistes, titres ou podcasts',
+                        hintStyle: TextStyle(color: Colors.grey[500]),
+                        border: InputBorder.none),
+                  ),
+                ),
+              ),
+              Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  borderRadius: const BorderRadius.all(Radius.circular(32)),
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Icon(Icons.search),
+                  ),
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
+  Widget _getMusicList() {
+    return ListView.separated(
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
+      itemCount: _tracks.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(_tracks[index].title ?? "Titre inconnu"),
+          leading: Image.network(_tracks[index].album!.cover ?? ""),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => MusicPage(infos: _tracks[index])),
+            );
+          },
+        );
+      },
+    );
   }
 }

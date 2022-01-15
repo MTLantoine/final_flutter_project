@@ -24,7 +24,8 @@ class DeezerApiProvider {
         return List<Track>.empty();
       }
       List<Track> tracks = [];
-      json['tracks']['data'].forEach((track) => tracks.add(Track.fromJson(track)));
+      json['tracks']['data']
+          .forEach((track) => tracks.add(Track.fromJson(track)));
 
       return tracks;
     }
