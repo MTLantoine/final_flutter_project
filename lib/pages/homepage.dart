@@ -16,8 +16,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  _HomePageState() {
+  @override
+  void initState() {
     getTrendingTracks();
+    super.initState();
   }
 
   DeezerApiRepository deezerApiRepository = DeezerApiRepository();
