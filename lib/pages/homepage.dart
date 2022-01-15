@@ -1,3 +1,4 @@
+import 'package:final_flutter_project/data/models/search.dart';
 import 'package:final_flutter_project/data/models/track.dart';
 import 'package:final_flutter_project/data/repositories/deezer_api_repository.dart';
 import 'package:flutter/material.dart';
@@ -14,17 +15,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  _HomePageState() {
+  @override
+  void initState() {
     getTrendingTracks();
+    super.initState();
   }
 
   DeezerApiRepository deezerApiRepository = DeezerApiRepository();
   List<Track> _tracks = [];
+  List<Search> _searchs = [];
 
   Future<void> getTrendingTracks() async {
     var data = await deezerApiRepository.getTrendingTracks();
     setState(() {
       _tracks = data;
+    });
+  }
+
+  Future<void> getSearchMusic() async {
+    var data = await deezerApiRepository.getSearchMusic();
+    setState(() {
+      _searchs = data;
     });
   }
 
@@ -47,7 +58,7 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             _getSearchBar(),
             Expanded(
-              child: _getMusicList(),
+              child: _searchs.isEmpty ? _getMusicList() : _getSearchMusic(),
             )
           ],
         ),
@@ -75,6 +86,9 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   padding: const EdgeInsets.only(left: 16),
                   child: TextField(
+                    onChanged: (value) {
+                      getSearchMusic();
+                    },
                     decoration: InputDecoration(
                         hintText: 'Artistes, titres ou podcasts',
                         hintStyle: TextStyle(color: Colors.grey[500]),
@@ -112,6 +126,25 @@ class _HomePageState extends State<HomePage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context) => MusicPage(infos: _tracks[index])),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _getSearchMusic() {
+    return ListView.separated(
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
+      itemCount: _searchs.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(_searchs[index].title ?? "Titre inconnu"),
+          leading: Image.network(_searchs[index].album!.cover ?? ""),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => MusicPage(infos: _searchs[index])),
             );
           },
         );
