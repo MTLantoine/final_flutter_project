@@ -1,3 +1,5 @@
+import 'package:final_flutter_project/data/models/embed.dart';
+import 'package:final_flutter_project/data/repositories/deezer_api_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -16,10 +18,20 @@ class _MusicPageState extends State<MusicPage> {
   @override
   void initState() {
     updateColorAsync();
+    getEmbedMusic(widget.infos.id);
     super.initState();
   }
 
+  DeezerApiRepository deezerApiRepository = DeezerApiRepository();
   Color _color = Colors.white;
+  late Embed _embed;
+
+  Future<void> getEmbedMusic(value) async {
+    var data = await deezerApiRepository.getEmbedMusic(value);
+    setState(() {
+      _embed = data!;
+    });
+  }
 
   void updateColorAsync() async {
     var provider = Image.network(widget.infos.album.coverBig);

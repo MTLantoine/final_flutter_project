@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:final_flutter_project/data/models/embed.dart';
 import 'package:final_flutter_project/data/models/search.dart';
 import 'package:final_flutter_project/data/models/track.dart';
 import 'package:flutter/material.dart';
@@ -52,5 +53,16 @@ class DeezerApiProvider {
       return searchs;
     }
     return [];
+  }
+
+  Future<Embed?> getEmbedMusic(value) async {
+    var uri = Uri.parse('https://api.deezer.com/oembed?url=https://www.deezer.com/track/$value');
+    var res = await http.get(uri);
+    if (res.statusCode == 200) {
+      Map<String, dynamic> json = jsonDecode(res.body);
+      Embed embed = Embed.fromJson(json);
+      return embed;
+    }
+    return null;
   }
 }

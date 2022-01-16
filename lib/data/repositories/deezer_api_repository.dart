@@ -1,3 +1,4 @@
+import 'package:final_flutter_project/data/models/embed.dart';
 import 'package:final_flutter_project/data/models/search.dart';
 import 'package:final_flutter_project/data/models/track.dart';
 import 'package:final_flutter_project/data/providers/deezer_api_provider.dart';
@@ -16,5 +17,9 @@ class DeezerApiRepository {
 
   Future<List<Search>> getSearchMusic(value) async {
     return await deezerApiProvider.getSearchMusic(value);
+  }
+
+  Future<Embed?> getEmbedMusic(value) async {
+    return await deezerApiProvider.getEmbedMusic(value);
   }
 }
