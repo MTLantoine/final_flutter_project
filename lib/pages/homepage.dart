@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:final_flutter_project/data/models/search.dart';
 import 'package:final_flutter_project/data/models/track.dart';
 import 'package:final_flutter_project/data/repositories/deezer_api_repository.dart';
@@ -25,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   List<Track> _tracks = [];
   List<Search> _searchs = [];
   bool _showMusicSearch = false;
+  Timer? _debounce;
 
   Future<void> getTrendingTracks() async {
     var data = await deezerApiRepository.getTrendingTracks();
@@ -38,6 +41,13 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _searchs = data;
       _showMusicSearch = value.isNotEmpty;
+    });
+  }
+
+  void _onSearchChange(value) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 50), () {
+      getSearchMusic(value);
     });
   }
 
@@ -89,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.only(left: 16),
                   child: TextField(
                     onChanged: (value) {
-                      getSearchMusic(value);
+                      _onSearchChange(value);
                     },
                     decoration: InputDecoration(
                         hintText: 'Artistes, titres ou podcasts',
