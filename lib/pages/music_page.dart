@@ -62,10 +62,11 @@ class _MusicPageState extends State<MusicPage> {
         backgroundColor: _color,
         body: Center(
           child: Container(
-            margin: const EdgeInsets.all(20.0),
             child: Column(
               children: <Widget>[
-                Stack(
+                Container(
+                    margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                    child: Stack(
                   alignment: Alignment.bottomLeft,
                   children: <Widget>[
                     ClipRRect(
@@ -92,7 +93,7 @@ class _MusicPageState extends State<MusicPage> {
                       ),
                     ),
                   ],
-                ),
+                )),
 
                 Expanded(
                     child: CommentList(
