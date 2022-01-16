@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
       );
     } else {
       return const Center(
-          child: Text('Votre recherche n\'a donnée aucun résultat :/'));
+          child: Text('Votre recherche n\'a donné aucun résultat :/'));
     }
   }
 }
