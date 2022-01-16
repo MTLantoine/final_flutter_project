@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   DeezerApiRepository deezerApiRepository = DeezerApiRepository();
   List<Track> _tracks = [];
   List<Search> _searchs = [];
+  bool _showMusicSearch = false;
 
   Future<void> getTrendingTracks() async {
     var data = await deezerApiRepository.getTrendingTracks();
@@ -32,10 +33,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> getSearchMusic() async {
-    var data = await deezerApiRepository.getSearchMusic();
+  Future<void> getSearchMusic(value) async {
+    var data = await deezerApiRepository.getSearchMusic(value);
     setState(() {
       _searchs = data;
+      _showMusicSearch = value.isNotEmpty;
     });
   }
 
@@ -58,13 +60,13 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             _getSearchBar(),
             Expanded(
-              child: _searchs.isEmpty ? _getMusicList() : _getSearchMusic(),
+              child: _showMusicSearch ? _getSearchMusic() : _getMusicList(),
             )
           ],
         ),
       );
     } else {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator(color: Colors.red));
     }
   }
 
@@ -87,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.only(left: 16),
                   child: TextField(
                     onChanged: (value) {
-                      getSearchMusic();
+                      getSearchMusic(value);
                     },
                     decoration: InputDecoration(
                         hintText: 'Artistes, titres ou podcasts',
@@ -134,21 +136,26 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _getSearchMusic() {
-    return ListView.separated(
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
-      itemCount: _searchs.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(_searchs[index].title ?? "Titre inconnu"),
-          leading: Image.network(_searchs[index].album!.cover ?? ""),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => MusicPage(infos: _searchs[index])),
-            );
-          },
-        );
-      },
-    );
+    if (_searchs.isNotEmpty) {
+      return ListView.separated(
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
+        itemCount: _searchs.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(_searchs[index].title ?? "Titre inconnu"),
+            leading: Image.network(_searchs[index].album!.cover ?? ""),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => MusicPage(infos: _searchs[index])),
+              );
+            },
+          );
+        },
+      );
+    } else {
+      return const Center(
+          child: Text('Votre recherche n\'a donnée aucun résultat :/'));
+    }
   }
 }

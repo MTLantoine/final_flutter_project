@@ -34,8 +34,11 @@ class DeezerApiProvider {
     return [];
   }
 
-  Future<List<Search>> getSearchMusic() async {
-    var uri = Uri.https(_baseUrl, '/search?q=eminem');
+  Future<List<Search>> getSearchMusic(value) async {
+    var params = {
+      'q': value,
+    };
+    var uri = Uri.https(_baseUrl, '/search', params);
     var res = await http.get(uri);
     if (res.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(res.body);

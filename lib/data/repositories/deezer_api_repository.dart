@@ -14,7 +14,7 @@ class DeezerApiRepository {
     return await deezerApiProvider.getTrendingTracks();
   }
 
-  Future<List<Search>> getSearchMusic() async {
-    return await deezerApiProvider.getSearchMusic();
+  Future<List<Search>> getSearchMusic(value) async {
+    return await deezerApiProvider.getSearchMusic(value);
   }
 }
