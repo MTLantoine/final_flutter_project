@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
             errorMessage = "Enter a valid email address";
             break;
           case "wrong-password":
-            errorMessage = "Wrong address";
+            errorMessage = "Wrong email address";
             break;
           case "user-not-found":
             errorMessage = "You need to sign up first";

@@ -66,8 +66,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.account_circle),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          prefixIcon: const Icon(Icons.account_circle),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Lastname",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -157,7 +157,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       borderRadius: BorderRadius.circular(30),
       color: Colors.redAccent,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
           onPressed: () {
             signUp(emailEditingController.text, passwordEditingController.text);
@@ -238,7 +238,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             errorMessage = "Enter a valid email address";
             break;
           case "wrong-password":
-            errorMessage = "Wrong address";
+            errorMessage = "Wrong email address";
             break;
           case "user-not-found":
             errorMessage = "You need to sign up first";
