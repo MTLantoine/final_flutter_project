@@ -58,9 +58,10 @@ class DeezerApiProvider {
   Future<Embed?> getEmbedMusic(value) async {
     var uri = Uri.parse('https://api.deezer.com/oembed?url=https://www.deezer.com/track/$value');
     var res = await http.get(uri);
+    Embed embed = Embed();
     if (res.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(res.body);
-      Embed embed = Embed.fromJson(json);
+      embed = Embed.fromJson(json);
       return embed;
     }
     return null;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:final_flutter_project/pages/comment_list.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class MusicPage extends StatefulWidget {
   const MusicPage({Key? key, this.infos}) : super(key: key);
@@ -19,12 +20,14 @@ class _MusicPageState extends State<MusicPage> {
   void initState() {
     updateColorAsync();
     getEmbedMusic(widget.infos.id);
+    _isEmbed = _embed.id != null && _embed.id != -1;
     super.initState();
   }
 
   DeezerApiRepository deezerApiRepository = DeezerApiRepository();
   Color _color = Colors.white;
-  late Embed _embed;
+  Embed _embed = Embed(html: "");
+  bool _isEmbed = false;
 
   Future<void> getEmbedMusic(value) async {
     var data = await deezerApiRepository.getEmbedMusic(value);
@@ -76,36 +79,7 @@ class _MusicPageState extends State<MusicPage> {
           child: Container(
             child: Column(
               children: <Widget>[
-                Container(
-                    margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                    child: Stack(
-                  alignment: Alignment.bottomLeft,
-                  children: <Widget>[
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: Image.network(
-                          widget.infos.album.coverBig,
-                          fit: BoxFit.cover,
-                          width: MediaQuery.of(context).size.width,
-                        )),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.5),
-                          borderRadius: const BorderRadius.only(
-                              bottomRight: Radius.circular(15.0),
-                              bottomLeft: Radius.circular(15.0))),
-                      padding: const EdgeInsets.all(10.0),
-                      width: double.infinity,
-                      child: Text(
-                        widget.infos.title,
-                        style: const TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
+                _isEmbed ? _getImage() : _getEmbedHtml(),
 
                 Expanded(
                     child: CommentList(
@@ -117,4 +91,46 @@ class _MusicPageState extends State<MusicPage> {
           ),
         ),
       );
+
+  Widget _getEmbedHtml() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(40.0),
+        child: Html(
+          data: _embed.html,
+        )
+    );
+  }
+
+  Widget _getImage() {
+    return Container(
+        margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+        child: Stack(
+          alignment: Alignment.bottomLeft,
+          children: <Widget>[
+            ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Image.network(
+                  widget.infos.album.coverBig,
+                  fit: BoxFit.cover,
+                  width: MediaQuery.of(context).size.width,
+                )),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  borderRadius: const BorderRadius.only(
+                      bottomRight: Radius.circular(15.0),
+                      bottomLeft: Radius.circular(15.0))),
+              padding: const EdgeInsets.all(10.0),
+              width: double.infinity,
+              child: Text(
+                widget.infos.title,
+                style: const TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ));
+  }
 }
