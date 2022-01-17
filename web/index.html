@@ -1,39 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+    <!--
+      If you are serving your web app in a path other than the root, change the
+      href value below to reflect the base path you are serving from.
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
+      The path provided below has to start and end with a slash "/" in order for
+      it to work correctly.
 
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+      For more details:
+      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
 
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
+      This is a placeholder for base href that will be replaced by the value of
+      the `--base-href` argument provided to `flutter build`.
+    -->
+    <base href="/">
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description" content="A new Flutter project.">
 
-  <!-- iOS meta tags & icons -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="final_flutter_project">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="final_flutter_project">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <title>final_flutter_project</title>
-  <link rel="manifest" href="manifest.json">
+    <title>final_flutter_project</title>
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <!-- This script installs service_worker.js to provide PWA functionality to
-       application. For more information, see:
-       https://developers.google.com/web/fundamentals/primers/service-workers -->
-  <script>
+<!-- This script installs service_worker.js to provide PWA functionality to
+     application. For more information, see:
+     https://developers.google.com/web/fundamentals/primers/service-workers -->
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+<script src="main.dart.js" type="application/javascript"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBqDesSgpHBAPmszX-VanHTpN820l2KnVs",
+    authDomain: "flutter-project-m2.firebaseapp.com",
+    projectId: "flutter-project-m2",
+    storageBucket: "flutter-project-m2.appspot.com",
+    messagingSenderId: "341038267993",
+    appId: "1:341038267993:web:5cddeba2c11e68d6183b48",
+    measurementId: "G-P4NX3W03VH"
+  };
+
+  //Init Firebase
+
+  const app = firebase.initializeApp(firebaseConfig);
+
+</script>
+<script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
     function loadMainDartJs() {
@@ -96,6 +117,7 @@
       // Service workers not supported. Just drop the <script> tag.
       loadMainDartJs();
     }
-  </script>
+
+</script>
 </body>
 </html>

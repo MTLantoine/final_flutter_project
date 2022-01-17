@@ -1,9 +1,14 @@
+import 'package:final_flutter_project/pages/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:final_flutter_project/pages/comment_list.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/homepage.dart';
 
-void main() {
+Future main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -15,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Music critizer',
+      title: 'Music criticizer',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -28,7 +33,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.red,
       ),
-      home: const HomePage(),
+      home: const LoginScreen(),
     );
   }
 }
