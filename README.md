@@ -1,6 +1,6 @@
 # final_flutter_project
 
-A new Flutter project.
+A Flutter project to rate songs
 
 ## Getting Started
 
