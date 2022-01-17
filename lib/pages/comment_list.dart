@@ -4,8 +4,13 @@ import 'package:final_flutter_project/data/models/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_flutter_project/data/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'music_page.dart';
+
+final FirebaseAuth auth = FirebaseAuth.instance;
 
 class CommentList extends StatefulWidget {
   const CommentList({Key? key, required this.trackId}) : super(key: key);
@@ -22,7 +27,7 @@ class _CommentListState extends State<CommentList> {
 
   @override
   void initState() {
-    getCommentFromFirebase();
+    getCommentsFromFirebase();
     super.initState();
   }
 
@@ -41,8 +46,12 @@ class _CommentListState extends State<CommentList> {
     if (comment.isEmpty) {
       return;
     }
+
+    final User? user = auth.currentUser;
+    final uid = user?.uid;
+
     // TODO : save the comment to firebase and replace Pierre by the current user
-    _comments.add(Comment("Pierre", comment));
+    _comments.add(Comment(uid!, comment));
     clearCommentAndRemoveFocus();
   }
 
@@ -55,7 +64,7 @@ class _CommentListState extends State<CommentList> {
     }
   }
 
-  Future<void> getCommentFromFirebase() async {
+  Future<void> getCommentsFromFirebase() async {
     // call firebase
     setState(() {
       // set value to comments
