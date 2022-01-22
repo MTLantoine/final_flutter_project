@@ -11,10 +11,10 @@ import 'package:final_flutter_project/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-
 import 'music_page.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
+final firestoreInstance = FirebaseFirestore.instance;
 
 class CommentList extends StatefulWidget {
   const CommentList({Key? key, required this.trackId}) : super(key: key);
@@ -51,15 +51,25 @@ class _CommentListState extends State<CommentList> {
       return;
     }
 
+    //get firstname for current user
     final User? user = auth.currentUser;
+    String resName = "Pierre";
 
-    FirebaseFirestore.instance.collection("users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-          _comments.add(Comment(value.data()!["firstName"], comment));
-          clearCommentAndRemoveFocus();
+    firestoreInstance.collection("users").doc(user!.uid).get().then((value) {
+      // _comments.add(Comment(value.data()!["firstName"], comment));
+      resName = value.data()!["firstName"];
+
+      firestoreInstance.collection("comments").add({
+        "author": resName,
+        "createdAt": Timestamp.now(),
+        "data": comment,
+        "trackId": 120,
+        "updatedAt": Timestamp.now()
+      }).then((value) => null);
     });
+
+    clearCommentAndRemoveFocus();
+
     // TODO : save the comment to firebase and replace Pierre by the current user
   }
 
@@ -73,6 +83,13 @@ class _CommentListState extends State<CommentList> {
   }
 
   Future<void> getCommentsFromFirebase() async {
+    // firestoreInstance
+    //     .collection("comments")
+    //     .doc(trackId)
+    //     .get()
+    //     .then((value) {
+    //   // _comments.add(Comment(value.data()!["firstName"], comment));
+    // });
     // call firebase
     setState(() {
       // set value to comments
