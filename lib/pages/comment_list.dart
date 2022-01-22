@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:final_flutter_project/data/models/track.dart';
 import 'package:final_flutter_project/data/repositories/deezer_api_repository.dart';
 import 'package:final_flutter_project/data/models/comment.dart';
@@ -7,6 +9,8 @@ import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_flutter_project/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+
 
 import 'music_page.dart';
 
@@ -48,11 +52,15 @@ class _CommentListState extends State<CommentList> {
     }
 
     final User? user = auth.currentUser;
-    final uid = user?.uid;
 
+    FirebaseFirestore.instance.collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+          _comments.add(Comment(value.data()!["firstName"], comment));
+          clearCommentAndRemoveFocus();
+    });
     // TODO : save the comment to firebase and replace Pierre by the current user
-    _comments.add(Comment(uid!, comment));
-    clearCommentAndRemoveFocus();
   }
 
   void clearCommentAndRemoveFocus() {
