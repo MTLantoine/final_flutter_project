@@ -56,21 +56,17 @@ class _CommentListState extends State<CommentList> {
     String resName = "Pierre";
 
     firestoreInstance.collection("users").doc(user!.uid).get().then((value) {
-      // _comments.add(Comment(value.data()!["firstName"], comment));
+      //TODO : Update list when new comment written
       resName = value.data()!["firstName"];
 
       firestoreInstance.collection("comments").add({
         "author": resName,
         "createdAt": Timestamp.now(),
         "data": comment,
-        "trackId": 120,
+        "trackId": 120, //TODO : Get current track ID
         "updatedAt": Timestamp.now()
-      }).then((value) => null);
+      }).then((value) => clearCommentAndRemoveFocus());
     });
-
-    clearCommentAndRemoveFocus();
-
-    // TODO : save the comment to firebase and replace Pierre by the current user
   }
 
   void clearCommentAndRemoveFocus() {
@@ -83,22 +79,19 @@ class _CommentListState extends State<CommentList> {
   }
 
   Future<void> getCommentsFromFirebase() async {
-    // firestoreInstance
-    //     .collection("comments")
-    //     .doc(trackId)
-    //     .get()
-    //     .then((value) {
-    //   // _comments.add(Comment(value.data()!["firstName"], comment));
-    // });
-    // call firebase
-    setState(() {
-      // set value to comments
-      _comments = [
-        Comment("Pierre", "Ceci est un commentaire"),
-        Comment("Lulu", "Pas ouf le film"),
-        Comment("Nicodrg", "La kiffance frrrrr"),
-        Comment("Pierre", "Ceci est un commentaire")
-      ];
+
+    // TODO : Add track ID for comments
+
+    firestoreInstance.collection("comments").get().then((querySnapshot) {
+      List<Comment> resComments = [];
+      for (var result in querySnapshot.docs) {
+          resComments.add(Comment(result.data()["author"], result.data()["data"]));
+      }
+      // call firebase
+      setState(() {
+        // set value to comments
+        _comments=resComments;
+      });
     });
   }
 
