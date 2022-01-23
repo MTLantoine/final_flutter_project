@@ -82,7 +82,7 @@ class _CommentListState extends State<CommentList> {
 
     // TODO : Add track ID for comments
 
-    firestoreInstance.collection("comments").get().then((querySnapshot) {
+    firestoreInstance.collection("comments").orderBy("createdAt",descending: true).get().then((querySnapshot) {
       List<Comment> resComments = [];
       for (var result in querySnapshot.docs) {
           resComments.add(Comment(result.data()["author"], result.data()["data"]));
