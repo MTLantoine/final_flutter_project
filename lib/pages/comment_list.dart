@@ -1,11 +1,19 @@
+import 'dart:convert';
+
 import 'package:final_flutter_project/data/models/track.dart';
 import 'package:final_flutter_project/data/repositories/deezer_api_repository.dart';
 import 'package:final_flutter_project/data/models/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_flutter_project/data/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'music_page.dart';
+
+final FirebaseAuth auth = FirebaseAuth.instance;
+final firestoreInstance = FirebaseFirestore.instance;
 
 class CommentList extends StatefulWidget {
   const CommentList({Key? key, required this.trackId}) : super(key: key);
@@ -22,7 +30,7 @@ class _CommentListState extends State<CommentList> {
 
   @override
   void initState() {
-    getCommentFromFirebase();
+    getCommentsFromFirebase();
     super.initState();
   }
 
@@ -41,9 +49,26 @@ class _CommentListState extends State<CommentList> {
     if (comment.isEmpty) {
       return;
     }
-    // TODO : save the comment to firebase and replace Pierre by the current user
-    _comments.add(Comment("Pierre", comment));
-    clearCommentAndRemoveFocus();
+
+    //get firstname for current user
+    final User? user = auth.currentUser;
+    String resName = "Pierre";
+
+    firestoreInstance.collection("users").doc(user!.uid).get().then((value) {
+      //TODO : Update list when new comment written
+      resName = value.data()!["firstName"];
+
+      firestoreInstance.collection("comments").add({
+        "author": resName,
+        "createdAt": Timestamp.now(),
+        "data": comment,
+        "trackId": widget.trackId, //TODO : Get current track ID
+        "updatedAt": Timestamp.now()
+      }).then((value) =>{
+      getCommentsFromFirebase(),
+      clearCommentAndRemoveFocus()
+      } );
+    });
   }
 
   void clearCommentAndRemoveFocus() {
@@ -55,16 +80,21 @@ class _CommentListState extends State<CommentList> {
     }
   }
 
-  Future<void> getCommentFromFirebase() async {
-    // call firebase
-    setState(() {
-      // set value to comments
-      _comments = [
-        Comment("Pierre", "Ceci est un commentaire"),
-        Comment("Lulu", "Pas ouf le film"),
-        Comment("Nicodrg", "La kiffance frrrrr"),
-        Comment("Pierre", "Ceci est un commentaire")
-      ];
+  Future<void> getCommentsFromFirebase() async {
+
+    // TODO : Add track ID for comments (.where(trackId,isEqualTo:...))
+
+    firestoreInstance.collection("comments").where("trackId",isEqualTo: widget.trackId).orderBy("createdAt",descending: true).get().then((querySnapshot) {
+      print(widget.trackId);
+      List<Comment> resComments = [];
+      for (var result in querySnapshot.docs) {
+          resComments.add(Comment(result.data()["author"], result.data()["data"]));
+      }
+      // call firebase
+      setState(() {
+        // set value to comments
+        _comments=resComments;
+      });
     });
   }
 
@@ -74,7 +104,6 @@ class _CommentListState extends State<CommentList> {
   }
 
   Widget _getBody() {
-    if (_comments.isNotEmpty) {
       return Column(children: [
         Expanded(
             child: Container(
@@ -136,8 +165,6 @@ class _CommentListState extends State<CommentList> {
                   )),
             ))
       ]);
-    } else {
-      return const Center(child: CircularProgressIndicator());
     }
   }
-}
+

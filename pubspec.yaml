@@ -43,6 +43,7 @@ dependencies:
   hive_generator: ^1.1.0
   build_runner: ^2.0.6
   palette_generator: ^0.3.2
+  firebase_database: ^9.0.5
 
 dev_dependencies:
   flutter_test:
