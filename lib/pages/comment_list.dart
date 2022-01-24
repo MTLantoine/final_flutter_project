@@ -9,7 +9,6 @@ import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_flutter_project/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 import 'music_page.dart';
 
@@ -63,9 +62,12 @@ class _CommentListState extends State<CommentList> {
         "author": resName,
         "createdAt": Timestamp.now(),
         "data": comment,
-        "trackId": 120, //TODO : Get current track ID
+        "trackId": widget.trackId, //TODO : Get current track ID
         "updatedAt": Timestamp.now()
-      }).then((value) => clearCommentAndRemoveFocus());
+      }).then((value) =>{
+      getCommentsFromFirebase(),
+      clearCommentAndRemoveFocus()
+      } );
     });
   }
 
@@ -80,9 +82,10 @@ class _CommentListState extends State<CommentList> {
 
   Future<void> getCommentsFromFirebase() async {
 
-    // TODO : Add track ID for comments
+    // TODO : Add track ID for comments (.where(trackId,isEqualTo:...))
 
-    firestoreInstance.collection("comments").orderBy("createdAt",descending: true).get().then((querySnapshot) {
+    firestoreInstance.collection("comments").where("trackId",isEqualTo: widget.trackId).orderBy("createdAt",descending: true).get().then((querySnapshot) {
+      print(widget.trackId);
       List<Comment> resComments = [];
       for (var result in querySnapshot.docs) {
           resComments.add(Comment(result.data()["author"], result.data()["data"]));
@@ -101,7 +104,6 @@ class _CommentListState extends State<CommentList> {
   }
 
   Widget _getBody() {
-    if (_comments.isNotEmpty) {
       return Column(children: [
         Expanded(
             child: Container(
@@ -163,8 +165,6 @@ class _CommentListState extends State<CommentList> {
                   )),
             ))
       ]);
-    } else {
-      return const Center(child: CircularProgressIndicator());
     }
   }
-}
+
