@@ -6,7 +6,9 @@ import 'package:final_flutter_project/data/models/track.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+
 class DeezerApiProvider {
+
   static final DeezerApiProvider _singleton = DeezerApiProvider._internal();
 
   factory DeezerApiProvider() => _singleton;
@@ -14,9 +16,11 @@ class DeezerApiProvider {
   DeezerApiProvider._internal();
 
   final String _baseUrl = 'api.deezer.com';
+  final String urlCors="guarded-fortress-41992.herokuapp.com";
 
   Future<List<Track>> getTrendingTracks() async {
-    var uri = Uri.https(_baseUrl, '/chart');
+
+    var uri = Uri.https(urlCors, '/api.deezer.com/chart');
     var res = await http.get(uri);
     if (res.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(res.body);
@@ -39,7 +43,7 @@ class DeezerApiProvider {
     var params = {
       'q': value,
     };
-    var uri = Uri.https(_baseUrl, '/search', params);
+    var uri = Uri.https(urlCors, '/search/api.deezer.com', params);
     var res = await http.get(uri);
     if (res.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(res.body);
@@ -56,7 +60,7 @@ class DeezerApiProvider {
   }
 
   Future<Embed?> getEmbedMusic(value) async {
-    var uri = Uri.parse('https://api.deezer.com/oembed?url=https://www.deezer.com/track/$value');
+    var uri = Uri.parse('guarded-fortress-41992.herokuapp.com/https://api.deezer.com/oembed?url=https://www.deezer.com/track/$value');
     var res = await http.get(uri);
     Embed embed = Embed();
     if (res.statusCode == 200) {
