@@ -8,9 +8,7 @@ import 'package:flutter_html/flutter_html.dart';
 
 class MusicPage extends StatefulWidget {
   const MusicPage({Key? key, this.infos}) : super(key: key);
-
   final infos;
-
   @override
   _MusicPageState createState() => _MusicPageState();
 }
@@ -28,7 +26,6 @@ class _MusicPageState extends State<MusicPage> {
   Color _color = Colors.white;
   Embed _embed = Embed(html: "");
   bool _isEmbed = false;
-
   Future<void> getEmbedMusic(value) async {
     var data = await deezerApiRepository.getEmbedMusic(value);
     setState(() {
@@ -54,20 +51,16 @@ class _MusicPageState extends State<MusicPage> {
   // ranges from 0.0 to 1.0
   Color darken(Color color, [double amount = .1]) {
     assert(amount >= 0 && amount <= 1);
-
     final hsl = HSLColor.fromColor(color);
     final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
-
     return hslDark.toColor();
   }
 
   Color lighten(Color color, [double amount = .1]) {
     assert(amount >= 0 && amount <= 1);
-
     final hsl = HSLColor.fromColor(color);
     final hslLight =
         hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
-
     return hslLight.toColor();
   }
 
@@ -76,13 +69,20 @@ class _MusicPageState extends State<MusicPage> {
         appBar: AppBar(),
         backgroundColor: _color,
         resizeToAvoidBottomInset: false,
-        body: Column(
-          children: <Widget>[
-            _isEmbed ? _getImage() : _getEmbedHtml(),
-            CommentList(
-              trackId: widget.infos.id ?? -1,
+        body: Center(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                _isEmbed ? _getImage() : _getEmbedHtml(),
+
+                Expanded(
+                    child: CommentList(
+                  trackId: widget.infos.id ?? -1,
+                ))
+                // Column(children: _displayCharacterInformations(details)),
+              ],
             ),
-          ],
+          ),
         ),
       );
 
