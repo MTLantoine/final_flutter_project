@@ -75,30 +75,23 @@ class _MusicPageState extends State<MusicPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(),
         backgroundColor: _color,
-        body: Center(
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                _isEmbed ? _getImage() : _getEmbedHtml(),
-
-                Expanded(
-                    child: CommentList(
-                  trackId: widget.infos.id ?? -1,
-                ))
-                // Column(children: _displayCharacterInformations(details)),
-              ],
+        resizeToAvoidBottomInset: false,
+        body: Column(
+          children: <Widget>[
+            _isEmbed ? _getImage() : _getEmbedHtml(),
+            CommentList(
+              trackId: widget.infos.id ?? -1,
             ),
-          ),
+          ],
         ),
       );
 
   Widget _getEmbedHtml() {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(40.0),
+        borderRadius: BorderRadius.circular(40.0),
         child: Html(
           data: _embed.html,
-        )
-    );
+        ));
   }
 
   Widget _getImage() {
