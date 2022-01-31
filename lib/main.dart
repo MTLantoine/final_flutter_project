@@ -1,6 +1,6 @@
 import 'package:final_flutter_project/pages/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:final_flutter_project/pages/comment_list.dart';
+import 'package:final_flutter_project/pages/android/comment_list_android.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/homepage.dart';

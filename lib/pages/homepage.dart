@@ -64,8 +64,12 @@ class _HomePageState extends State<HomePage> {
 
   Widget _getBody() {
     if (_tracks.isNotEmpty) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+      return Container(
+        margin: EdgeInsets.fromLTRB(
+            kIsWeb ? MediaQuery.of(context).size.width * 0.3 : 0,
+            0,
+            kIsWeb ? MediaQuery.of(context).size.width * 0.3 : 0,
+            0),        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
         child: Column(
           children: <Widget>[
             _getSearchBar(),
