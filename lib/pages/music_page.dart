@@ -9,6 +9,7 @@ import 'package:flutter_html/flutter_html.dart';
 class MusicPage extends StatefulWidget {
   const MusicPage({Key? key, this.infos}) : super(key: key);
   final infos;
+
   @override
   _MusicPageState createState() => _MusicPageState();
 }
@@ -26,6 +27,7 @@ class _MusicPageState extends State<MusicPage> {
   Color _color = Colors.white;
   Embed _embed = Embed(html: "");
   bool _isEmbed = false;
+
   Future<void> getEmbedMusic(value) async {
     var data = await deezerApiRepository.getEmbedMusic(value);
     setState(() {
@@ -68,30 +70,34 @@ class _MusicPageState extends State<MusicPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(),
         backgroundColor: _color,
-        resizeToAvoidBottomInset: false,
         body: Center(
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                _isEmbed ? _getImage() : _getEmbedHtml(),
+          child: SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height - 78,
+              child: Column(
+                children: <Widget>[
+                  _isEmbed ? _getImage() : _getEmbedHtml(),
 
-                Expanded(
-                    child: CommentList(
-                  trackId: widget.infos.id ?? -1,
-                ))
-                // Column(children: _displayCharacterInformations(details)),
-              ],
+                  Expanded(
+                      child: CommentList(
+                    trackId: widget.infos.id ?? -1,
+                  ))
+                  // Column(children: _displayCharacterInformations(details)),
+                ],
+              ),
             ),
           ),
         ),
       );
 
   Widget _getEmbedHtml() {
-    return ClipRRect(
-        borderRadius: BorderRadius.circular(40.0),
-        child: Html(
-          data: _embed.html,
-        ));
+    return Container(
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(40.0),
+          child: Html(
+            data: _embed.html,
+          )),
+    );
   }
 
   Widget _getImage() {
