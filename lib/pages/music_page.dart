@@ -81,7 +81,7 @@ class _MusicPageState extends State<MusicPage> {
           child: Center(
             child: SingleChildScrollView(
               child: SizedBox(
-                height: MediaQuery.of(context).size.height - 78,
+                height: MediaQuery.of(context).size.height - 75,
                 child: Column(
                   children: <Widget>[
                     _isEmbed ? _getImage() : _getEmbedHtml(),
