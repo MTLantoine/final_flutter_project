@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Music criticizer',
+      title: 'Spoteezer',
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
