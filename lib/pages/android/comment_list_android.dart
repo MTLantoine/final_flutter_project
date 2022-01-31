@@ -8,19 +8,19 @@ import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_flutter_project/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'music_page.dart';
+import '../music_page.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final firestoreInstance = FirebaseFirestore.instance;
 
-class CommentList extends StatefulWidget {
-  const CommentList({Key? key, required this.trackId}) : super(key: key);
+class CommentListAndroid extends StatefulWidget {
+  const CommentListAndroid({Key? key, required this.trackId}) : super(key: key);
   final int trackId;
   @override
-  _CommentListState createState() => _CommentListState();
+  _CommentListAndroidState createState() => _CommentListAndroidState();
 }
 
-class _CommentListState extends State<CommentList> {
+class _CommentListAndroidState extends State<CommentListAndroid> {
   final _formKey = GlobalKey<FormState>();
   final _commentController = TextEditingController();
   @override

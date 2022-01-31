@@ -1,10 +1,12 @@
 import 'package:final_flutter_project/data/models/embed.dart';
 import 'package:final_flutter_project/data/repositories/deezer_api_repository.dart';
+import 'package:final_flutter_project/pages/web/comment_list_web.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:final_flutter_project/pages/comment_list.dart';
+import 'package:final_flutter_project/pages/android/comment_list_android.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class MusicPage extends StatefulWidget {
   const MusicPage({Key? key, this.infos}) : super(key: key);
@@ -70,20 +72,26 @@ class _MusicPageState extends State<MusicPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(),
         backgroundColor: _color,
-        body: Center(
-          child: SingleChildScrollView(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height - 78,
-              child: Column(
-                children: <Widget>[
-                  _isEmbed ? _getImage() : _getEmbedHtml(),
-
-                  Expanded(
-                      child: CommentList(
-                    trackId: widget.infos.id ?? -1,
-                  ))
-                  // Column(children: _displayCharacterInformations(details)),
-                ],
+        body: Container(
+          margin: EdgeInsets.fromLTRB(
+              kIsWeb ? MediaQuery.of(context).size.width * 0.3 : 0,
+              0,
+              kIsWeb ? MediaQuery.of(context).size.width * 0.3 : 0,
+              0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height - 75,
+                child: Column(
+                  children: <Widget>[
+                    _isEmbed ? _getImage() : _getEmbedHtml(),
+                    Expanded(
+                        child: kIsWeb
+                            ? CommentListWeb(trackId: widget.infos.id ?? -1)
+                            : CommentListAndroid(
+                                trackId: widget.infos.id ?? -1))
+                  ],
+                ),
               ),
             ),
           ),
@@ -91,7 +99,7 @@ class _MusicPageState extends State<MusicPage> {
       );
 
   Widget _getEmbedHtml() {
-    return Container(
+    return Center(
       child: ClipRRect(
           borderRadius: BorderRadius.circular(40.0),
           child: Html(

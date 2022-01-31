@@ -3,6 +3,7 @@ import 'package:final_flutter_project/pages/register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -99,53 +100,60 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(36.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                        height: 200,
-                        child: Image.asset(
-                          "assets/logo.png",
-                          fit: BoxFit.contain,
-                        )),
-                    const SizedBox(height: 45),
-                    emailField,
-                    const SizedBox(height: 25),
-                    passwordField,
-                    const SizedBox(height: 35),
-                    loginButton,
-                    const SizedBox(height: 15),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Text("Don't have an account ? "),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const RegistrationScreen()));
-                            },
-                            child: const Text(
-                              "Sign up here !",
-                              style: TextStyle(
-                                  color: Colors.redAccent,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15),
-                            ),
-                          )
-                        ])
-                  ],
+      body: Container(
+        margin: EdgeInsets.fromLTRB(
+            kIsWeb ? MediaQuery.of(context).size.width * 0.3 : 5,
+            10,
+            kIsWeb ? MediaQuery.of(context).size.width * 0.3 : 5,
+            10),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(36.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                          height: 200,
+                          child: Image.asset(
+                            "assets/logo.png",
+                            fit: BoxFit.contain,
+                          )),
+                      const SizedBox(height: 45),
+                      emailField,
+                      const SizedBox(height: 25),
+                      passwordField,
+                      const SizedBox(height: 35),
+                      loginButton,
+                      const SizedBox(height: 15),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const Text("Don't have an account ? "),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RegistrationScreen()));
+                              },
+                              child: const Text(
+                                "Sign up here !",
+                                style: TextStyle(
+                                    color: Colors.redAccent,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            )
+                          ])
+                    ],
+                  ),
                 ),
               ),
             ),

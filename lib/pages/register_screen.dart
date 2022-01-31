@@ -4,6 +4,7 @@ import 'package:final_flutter_project/pages/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -183,38 +184,45 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           },
         ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(36.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                        height: 180,
-                        child: Image.asset(
-                          "assets/logo.png",
-                          fit: BoxFit.contain,
-                        )),
-                    const SizedBox(height: 45),
-                    firstNameField,
-                    const SizedBox(height: 20),
-                    lastNameField,
-                    const SizedBox(height: 20),
-                    emailField,
-                    const SizedBox(height: 20),
-                    passwordField,
-                    const SizedBox(height: 20),
-                    confirmPasswordField,
-                    const SizedBox(height: 20),
-                    signUpButton,
-                    const SizedBox(height: 15),
-                  ],
+      body: Container(
+        margin: EdgeInsets.fromLTRB(
+            kIsWeb ? MediaQuery.of(context).size.width * 0.3 : 5,
+            10,
+            kIsWeb ? MediaQuery.of(context).size.width * 0.3 : 5,
+            10),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(36.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                          height: 180,
+                          child: Image.asset(
+                            "assets/logo.png",
+                            fit: BoxFit.contain,
+                          )),
+                      const SizedBox(height: 45),
+                      firstNameField,
+                      const SizedBox(height: 20),
+                      lastNameField,
+                      const SizedBox(height: 20),
+                      emailField,
+                      const SizedBox(height: 20),
+                      passwordField,
+                      const SizedBox(height: 20),
+                      confirmPasswordField,
+                      const SizedBox(height: 20),
+                      signUpButton,
+                      const SizedBox(height: 15),
+                    ],
+                  ),
                 ),
               ),
             ),
